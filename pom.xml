@@ -32,7 +32,7 @@
         <url>http://bunney.net.au/</url>
     </organization>
 
-    <name>BunnBamboo Information Variables Task</name>
+    <name>Bamboo Information Variables Task</name>
     <description>Injects bamboo variables for various bits of information - such a list of code changes</description>
     <packaging>atlassian-plugin</packaging>
 
