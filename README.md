@@ -1,0 +1,2 @@
+bamboo-info-variables-task
+==========================
