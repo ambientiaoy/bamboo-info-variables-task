@@ -32,7 +32,7 @@
         <url>http://bunney.net.au/</url>
     </organization>
 
-    <name>Bamboo Information Variables Task</name>
+    <name>BunnBamboo Information Variables Task</name>
     <description>Injects bamboo variables for various bits of information - such a list of code changes</description>
     <packaging>atlassian-plugin</packaging>
 
@@ -63,7 +63,14 @@
             <version>${bamboo.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
