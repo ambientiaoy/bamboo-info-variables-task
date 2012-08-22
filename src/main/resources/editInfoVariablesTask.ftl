@@ -13,4 +13,12 @@
         <strong>bamboo.info.commentList</strong><br/>
         Comments only, in the format of <em>&lt;comment&gt;</em>, seperated by new lines.
     </p>
+
+    <br/>
+
+    <p>
+        <strong>bamboo.info.authorList</strong><br/>
+        Authors only, in the format of <em>&lt;author&gt;</em>, seperated by new lines.
+    </p>
+
 [/@ui.messageBox]

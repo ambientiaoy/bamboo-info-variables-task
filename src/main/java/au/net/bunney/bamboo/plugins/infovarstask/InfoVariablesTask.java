@@ -21,13 +21,16 @@
 
 package au.net.bunney.bamboo.plugins.infovarstask;
 
+import com.atlassian.bamboo.author.Author;
 import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.commit.CommitContext;
 import com.atlassian.bamboo.task.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Info Variables Task.
@@ -50,19 +53,19 @@ public class InfoVariablesTask implements TaskType
 
         final Map<String, String> customBuildData = taskContext.getBuildContext().getBuildResult().getCustomBuildData();
 
-        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, getChangesAsStringList(changesList, true, true));
+        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, getChangesAsStringList(changesList, true));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_COMMENT_LIST);
 
-        customBuildData.put(VARIABLE_COMMENT_LIST, getChangesAsStringList(changesList, false, true));
+        customBuildData.put(VARIABLE_COMMENT_LIST, getChangesAsStringList(changesList, false));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_COMMENT_LIST);
 
-        customBuildData.put(VARIABLE_AUTHOR_LIST, getChangesAsStringList(changesList, true, false));
+        customBuildData.put(VARIABLE_AUTHOR_LIST, getAuthorsAsStringList(changesList));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_LIST);
 
         return TaskResultBuilder.create(taskContext).success().build();
     }
 
-    protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor, boolean includeComment) {
+    protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor) {
         StringBuilder stringBuilder = new StringBuilder();
         for (CommitContext change : changes) {
 
@@ -74,12 +77,37 @@ public class InfoVariablesTask implements TaskType
                 stringBuilder.append(" - ");
             }
 
-            if (includeComment) {
-                stringBuilder.append(change.getComment());
-            }
-
+            stringBuilder.append(change.getComment());
             stringBuilder.append("\r\n");
         }
         return stringBuilder.toString();
+    }
+
+    protected String getAuthorsAsStringList(List<CommitContext> changes) {
+        Set<Author> authors = getAuthors(changes);
+        if (authors.size() == 0)
+            return "";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Author author : authors) {
+
+            if (author.getName() == null)
+                continue;
+
+            stringBuilder.append("+ ");
+            stringBuilder.append(author.getName());
+            stringBuilder.append("\r\n");
+        }
+
+        return stringBuilder.toString();
+    }
+
+    protected Set<Author> getAuthors(List<CommitContext> changes) {
+        Set<Author> authors = new HashSet<Author>();
+        for (CommitContext change : changes) {
+            if (change.getAuthor() != null)
+                authors.add(change.getAuthor());
+        }
+        return authors;
     }
 }

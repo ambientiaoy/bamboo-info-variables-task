@@ -38,6 +38,23 @@ ${bamboo.info.commentList}
 + BAM-123: Fixed the bug correctly this time
 ```
 
+## Author List
+
+List of the authors from the SCM from the build.
+
+Format of `+ <author>` seperated by new lines.
+
+### Usage
+```
+${bamboo.info.authorList}
+```
+
+
+### Example
+```
++ Gavin Bunney
+```
+
 
 ----
 
