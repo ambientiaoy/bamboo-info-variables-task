@@ -1,0 +1,16 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <taskType name="Information Variables Task" class="au.net.bunney.bamboo.plugins.infovarstask.InfoVariablesTask" key="infoVariables">
+        <description>Injects bamboo variables for various bits of information - such a list of code changes</description>
+
+        <configuration class="au.net.bunney.bamboo.plugins.infovarstask.InfoVariablesTaskConfigurator"/>
+        <resource type="freemarker" name="edit" location="editInfoVariablesTask.ftl"/>
+        <resource type="download" name="icon" location="icon.png"/>
+
+    </taskType>
+</atlassian-plugin>
