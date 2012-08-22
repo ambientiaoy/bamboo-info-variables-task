@@ -16,8 +16,8 @@ ${bamboo.info.authorAndCommentList}
 
 ### Example
 ```
-+ Gavin Bunney - BAM123: Fixed bug with things that are broken
-+ Gavin Bunney - BAM123: Fixed the bug correctly this time
++ Gavin Bunney - BAM-123: Fixed bug with things that are broken
++ Gavin Bunney - BAM-123: Fixed the bug correctly this time
 ```
 
 ## Comments List
@@ -34,8 +34,8 @@ ${bamboo.info.commentList}
 
 ### Example
 ```
-+ BAM123: Fixed bug with things that are broken
-+ BAM123: Fixed the bug correctly this time
++ BAM-123: Fixed bug with things that are broken
++ BAM-123: Fixed the bug correctly this time
 ```
 
 
