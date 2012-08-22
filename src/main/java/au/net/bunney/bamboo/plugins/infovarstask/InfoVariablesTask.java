@@ -39,26 +39,30 @@ public class InfoVariablesTask implements TaskType
     private static final String VARIABLE_PREFIX = "info.";
     private static final String VARIABLE_AUTHOR_COMMENT_LIST = VARIABLE_PREFIX + "authorAndCommentList";
     private static final String VARIABLE_COMMENT_LIST = VARIABLE_PREFIX + "commentList";
+    private static final String VARIABLE_AUTHOR_LIST = VARIABLE_PREFIX + "authorList";
 
     @NotNull
     @java.lang.Override
     public TaskResult execute(@NotNull final TaskContext taskContext) throws TaskException
     {
         final BuildLogger buildLogger = taskContext.getBuildLogger();
-        final TaskResultBuilder builder = TaskResultBuilder.create(taskContext);
+        final List<CommitContext> changesList = taskContext.getBuildContext().getBuildChanges().getChanges();
 
         final Map<String, String> customBuildData = taskContext.getBuildContext().getBuildResult().getCustomBuildData();
 
-        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, getChangesAsStringList(taskContext.getBuildContext().getBuildChanges().getChanges(), true));
+        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, getChangesAsStringList(changesList, true, true));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_COMMENT_LIST);
 
-        customBuildData.put(VARIABLE_COMMENT_LIST, getChangesAsStringList(taskContext.getBuildContext().getBuildChanges().getChanges(), false));
+        customBuildData.put(VARIABLE_COMMENT_LIST, getChangesAsStringList(changesList, false, true));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_COMMENT_LIST);
 
-        return builder.success().build();
+        customBuildData.put(VARIABLE_AUTHOR_LIST, getChangesAsStringList(changesList, true, false));
+        buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_LIST);
+
+        return TaskResultBuilder.create(taskContext).success().build();
     }
 
-    protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor) {
+    protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor, boolean includeComment) {
         StringBuilder stringBuilder = new StringBuilder();
         for (CommitContext change : changes) {
 
@@ -70,7 +74,10 @@ public class InfoVariablesTask implements TaskType
                 stringBuilder.append(" - ");
             }
 
-            stringBuilder.append(change.getComment());
+            if (includeComment) {
+                stringBuilder.append(change.getComment());
+            }
+
             stringBuilder.append("\r\n");
         }
         return stringBuilder.toString();
