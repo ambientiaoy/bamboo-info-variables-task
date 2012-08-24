@@ -3,6 +3,8 @@
 
 Bamboo Task to inject various information variables for use within a Job.
 
+![Bamboo Information Variables Task](https://raw.github.com/gavinbunney/bamboo-info-variables-task/master/src/main/resources/pluginBanner.png)
+
 ## Author and Comments List
 
 List of the authors and comments from the SCM from the build.
