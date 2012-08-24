@@ -3,6 +3,10 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
+
+        <param name="plugin-icon">pluginIcon.png</param>
+        <param name="plugin-logo">pluginLogo.png</param>
+        <param name="plugin-banner">pluginBanner.png</param>
     </plugin-info>
 
     <taskType name="Information Variables Task" class="au.net.bunney.bamboo.plugins.infovarstask.InfoVariablesTask" key="infoVariables">
