@@ -51,9 +51,9 @@
     </scm>
 
     <properties>
-        <bamboo.version>4.0</bamboo.version>
-        <bamboo.data.version>3.2.2</bamboo.data.version>
-        <amps.version>3.10.4</amps.version>
+        <bamboo.version>5.13.0</bamboo.version>
+        <bamboo.data.version>5.13.0</bamboo.data.version>
+        <amps.version>6.2.3</amps.version>
     </properties>
 
     <dependencies>
