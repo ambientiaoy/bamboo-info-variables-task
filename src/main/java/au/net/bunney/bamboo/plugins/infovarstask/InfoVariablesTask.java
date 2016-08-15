@@ -22,6 +22,7 @@
 package au.net.bunney.bamboo.plugins.infovarstask;
 
 import com.atlassian.bamboo.author.Author;
+import com.atlassian.bamboo.author.AuthorContext;
 import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.commit.CommitContext;
 import com.atlassian.bamboo.task.*;
@@ -62,18 +63,19 @@ public class InfoVariablesTask implements TaskType
         customBuildData.put(VARIABLE_AUTHOR_LIST, getAuthorsAsStringList(changesList));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_LIST);
 
-        return TaskResultBuilder.create(taskContext).success().build();
+        return TaskResultBuilder.newBuilder(taskContext).success().build();
     }
 
     protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor) {
         StringBuilder stringBuilder = new StringBuilder();
         for (CommitContext change : changes) {
+        	AuthorContext authorContext = change.getAuthorContext();
 
             stringBuilder.append("+ ");
             if (   (includeAuthor)
-                && (change.getAuthor() != null)
-                && (change.getAuthor().getName() != null)) {
-                stringBuilder.append(change.getAuthor().getName());
+                && (authorContext != null)
+                && (authorContext.getName() != null)) {
+                stringBuilder.append(authorContext.getName());
                 stringBuilder.append(" - ");
             }
 
@@ -84,12 +86,12 @@ public class InfoVariablesTask implements TaskType
     }
 
     protected String getAuthorsAsStringList(List<CommitContext> changes) {
-        Set<Author> authors = getAuthors(changes);
+        Set<AuthorContext> authors = getAuthors(changes);
         if (authors.size() == 0)
             return "";
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (Author author : authors) {
+        for (AuthorContext author : authors) {
 
             if (author.getName() == null)
                 continue;
@@ -102,11 +104,12 @@ public class InfoVariablesTask implements TaskType
         return stringBuilder.toString();
     }
 
-    protected Set<Author> getAuthors(List<CommitContext> changes) {
-        Set<Author> authors = new HashSet<Author>();
+    protected Set<AuthorContext> getAuthors(List<CommitContext> changes) {
+        Set<AuthorContext> authors = new HashSet<AuthorContext>();
         for (CommitContext change : changes) {
-            if (change.getAuthor() != null)
-                authors.add(change.getAuthor());
+        	AuthorContext authorContext = change.getAuthorContext();
+            if (authorContext != null)
+                authors.add(authorContext);
         }
         return authors;
     }
