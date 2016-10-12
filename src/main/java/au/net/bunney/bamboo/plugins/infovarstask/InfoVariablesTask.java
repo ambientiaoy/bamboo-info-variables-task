@@ -54,16 +54,22 @@ public class InfoVariablesTask implements TaskType
 
         final Map<String, String> customBuildData = taskContext.getBuildContext().getBuildResult().getCustomBuildData();
 
-        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, getChangesAsStringList(changesList, true));
+        customBuildData.put(VARIABLE_AUTHOR_COMMENT_LIST, trimTo(4000, getChangesAsStringList(changesList, true)));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_COMMENT_LIST);
 
-        customBuildData.put(VARIABLE_COMMENT_LIST, getChangesAsStringList(changesList, false));
+        customBuildData.put(VARIABLE_COMMENT_LIST, trimTo(4000, getChangesAsStringList(changesList, false)));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_COMMENT_LIST);
 
-        customBuildData.put(VARIABLE_AUTHOR_LIST, getAuthorsAsStringList(changesList));
+        customBuildData.put(VARIABLE_AUTHOR_LIST, trimTo(4000, getAuthorsAsStringList(changesList)));
         buildLogger.addBuildLogEntry("Injected variable: bamboo." + VARIABLE_AUTHOR_LIST);
 
         return TaskResultBuilder.newBuilder(taskContext).success().build();
+    }
+
+    private String trimTo(int length, String stringToTrim) {
+        return stringToTrim.length() < length ?
+                stringToTrim :
+                stringToTrim.substring(0, length );
     }
 
     protected String getChangesAsStringList(List<CommitContext> changes, boolean includeAuthor) {

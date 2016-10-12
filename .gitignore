@@ -1,2 +1,5 @@
 target/
 workspace.xml
+.idea
+bamboo-info-variables-tasks.iml
+bamboo-info-variables-task.iml
